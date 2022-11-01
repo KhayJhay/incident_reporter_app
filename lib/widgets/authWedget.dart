@@ -5,6 +5,7 @@ Widget buildTextField(TextEditingController controller, IconData icon,
   return Padding(
     padding: const EdgeInsets.only(bottom: 25.0),
     child: TextFormField(
+      cursorColor: Colors.white,
       controller: controller,
       obscureText: isPassword,
       validator: (value) {
@@ -35,9 +36,16 @@ Widget buildTextField(TextEditingController controller, IconData icon,
           icon,
           color: Colors.white,
         ),
+        fillColor: Colors.white,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.white,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.black,
           ),
           borderRadius: BorderRadius.all(Radius.circular(15)),
         ),

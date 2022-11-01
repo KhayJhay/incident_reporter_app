@@ -1,15 +1,60 @@
+import 'dart:ui';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
 import 'package:flutter/material.dart';
+import 'package:incident_reporter_app/pages/incident_list_page.dart';
+import 'package:incident_reporter_app/pages/sendEmailpage.dart';
+import 'package:incident_reporter_app/widgets/constants.dart';
+import 'package:galleryimage/galleryimage.dart';
+import 'package:image_picker/image_picker.dart';
+import '../models/fireReport_model.dart';
+import 'package:lottie/lottie.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:incident_reporter_app/widgets/constants.dart';
 
 import '../models/floodReport_model.dart';
 import 'incident_list_page.dart';
 
-class Water_Damage_Page extends StatelessWidget {
+class Water_Damage_Page extends StatefulWidget {
   const Water_Damage_Page({super.key});
+
+  @override
+  State<Water_Damage_Page> createState() => _Water_Damage_PageState();
+}
+
+class _Water_Damage_PageState extends State<Water_Damage_Page> {
+  bool isCheck = false;
+  late File imageFile;
+
+  /// Get from gallery
+  _getFromGallery() async {
+    PickedFile? pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+        isCheck = true;
+      });
+    }
+  }
+
+  /// Get from Camera
+  _getFromCamera() async {
+    PickedFile? pickedFile = await ImagePicker().getImage(
+      source: ImageSource.camera,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+        isCheck = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -182,129 +227,150 @@ class Water_Damage_Page extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.blue,
+                    TextButton(
+                      onPressed: () {
+                        _getFromCamera();
+                      },
+                      child: Container(
+                        height: 60,
+                        width: 160,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(25)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.camera,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "Camera",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Poppins-Regular',
+                                  fontSize: 16),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Icon(
-                        Icons.camera,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Camera",
-                      style: TextStyle(
-                          fontFamily: 'Poppins-Regular', fontSize: 12),
                     ),
                   ],
                 ),
                 Column(
                   children: [
-                    Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.blue,
-                      ),
-                      child: Icon(
-                        Icons.image_rounded,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Gallery",
-                      style: TextStyle(
-                          fontFamily: 'Poppins-Regular', fontSize: 12),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.blue,
-                      ),
-                      child: Icon(
-                        Icons.video_camera_front,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Video",
-                      style: TextStyle(
-                          fontFamily: 'Poppins-Regular', fontSize: 12),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.blue,
-                      ),
-                      child: Icon(
-                        Icons.mic,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Audio",
-                      style: TextStyle(
-                          fontFamily: 'Poppins-Regular', fontSize: 12),
+                    TextButton(
+                      onPressed: (() {
+                        _getFromGallery();
+                      }),
+                      child: Container(
+                          height: 60,
+                          width: 160,
+                          decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(25)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.image_outlined,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "Gallery",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Poppins-Regular',
+                                    fontSize: 16),
+                              ),
+                            ],
+                          )),
                     ),
                   ],
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Container(
-                height: 200,
-                width: _width,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/flood.jpg"))),
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: isCheck
+                      ? Container(
+                    height: 200,
+                    width: _width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.file(
+                        imageFile,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
+                      : Lottie.asset(
+                    "assets/lotties/noimage.json",
+                    height: 250,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: Container(
+                      width: _width,
+                      height: 50,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.QUESTION,
+                                animType: AnimType.BOTTOMSLIDE,
+                                title: 'Submit Report or Send Email',
+                                desc:
+                                'Will you like to make a report or send email to emergency service directly',
+                                btnCancelText: "Send Email",
+                                btnCancelColor: Colors.blue,
+                                btnCancelOnPress: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SendEmailpage(
+                                          title: "Fire-service Email"),
+                                    ),
+                                  );
+                                },
+                                btnOkOnPress: () {
+                                  final newReport = Floodreport(
+                                      name: nameController.text,
+                                      body: floodIncidentController.text,
+                                      date: dateController.text,
+                                      time: timeController.text);
+                                  submitfloodReport(newReport);
+                                },
+                                btnOkText: "Submit Report")
+                              ..show();
+                          },
+                          /*
+                             AwesomeDialog(
+            context: context,
+            dialogType: DialogType.WARNING,
+            animType: AnimType.BOTTOMSLIDE,
+            title: 'Invalid Authentication',
+            desc: '$e',
+            btnOkOnPress: () {},
+          )..show();
+                            */
+                          child: Text('Submit'))),
+                )
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15.0),
-              child: Container(
-                  width: _width,
-                  height: 50,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        final newReport = Floodreport(
-                            name: nameController.text,
-                            body: floodIncidentController.text,
-                            date: dateController.text,
-                            time: timeController.text);
-                        submitfloodReport(newReport);
-                      },
-                      child: Text('Submit'))),
-            )
           ],
         ),
       ),
@@ -333,3 +399,12 @@ class Water_Damage_Page extends StatelessWidget {
     await docReport.set(json);
   }
 }
+
+/*
+ final newReport = Floodreport(
+                            name: nameController.text,
+                            body: floodIncidentController.text,
+                            date: dateController.text,
+                            time: timeController.text);
+                        submitfloodReport(newReport);
+*/

@@ -530,16 +530,16 @@ class Incident_List_Page extends StatelessWidget {
   Widget buildpowerReports(PowerAlertreport report) => Card(
         child: ListTile(
           title: Text(
-            "POWER  ALERT",
+            "CAR ACCIDENT",
             style: TextStyle(
               fontFamily: "Poppins-SemiBold",
-              color: Colors.yellow,
+              color: Colors.red,
               fontSize: 13,
             ),
           ),
           leading: Icon(
-            Icons.electric_bolt_rounded,
-            color: Colors.yellow,
+            Icons.car_crash,
+            color: Colors.red,
             size: 48,
           ),
           subtitle: Column(

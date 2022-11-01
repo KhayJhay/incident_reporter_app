@@ -128,7 +128,7 @@ class _Home_ViewState extends State<Home_View>
         context: context,
         builder: (context) => AlertDialog(
               content: Container(
-                height: _height * 0.5,
+                height: _height * 0.52,
                 width: _width,
                 child: Column(
                   children: [
@@ -211,11 +211,11 @@ class _Home_ViewState extends State<Home_View>
                                 builder: (context) => Power_Alert_Page()));
                       },
                       leading: Icon(
-                        Icons.electric_bolt,
-                        color: Colors.yellow,
+                        Icons.car_crash_outlined,
+                        color: Colors.red,
                       ),
                       title: Text(
-                        "Power Alert",
+                        "Accident",
                         style: TextStyle(
                           fontFamily: "Poppins-Regular",
                           fontSize: 16,
